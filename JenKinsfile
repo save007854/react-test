@@ -1,7 +1,8 @@
 pipeline {
-
-    agent any
-
+    agent {
+        docker {
+            // Specify the Docker image you want to use
+            image 'your-docker-image:tag'
 
     stages {
         stage('Checkout') {
@@ -9,7 +10,7 @@ pipeline {
                 checkout scm
             }
         }
-
+    }
         stage('Build and Dockerize') {
             steps {
                 script {
@@ -27,5 +28,5 @@ pipeline {
                 }
             }
         }
-    }
-}
+      }
+  }
