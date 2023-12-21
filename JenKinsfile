@@ -2,51 +2,26 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                // Assuming your Git repository URL is 'https://github.com/your-username/your-repo.git'
-                git 'https://github.com/your-username/your-repo.git'
+                checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build and Dockerize') {
             steps {
                 script {
-                    sh 'npm install'
+                    docker.build("your-react-app-image")
                 }
             }
         }
 
-        stage('Build') {
+        stage('Push to Registry') {
             steps {
                 script {
-                    sh 'npm run build'
-                }
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                script {
-                    sh 'docker build -t your-image-name .'
-                }
-            }
-        }
-
-        stage('Docker Push') {
-            steps {
-                script {
-                    sh 'docker push your-image-name'
-                }
-            }
-        }
-
-        stage('Deploy to Portainer') {
-            steps {
-                script {
-                    // Use Portainer CLI or API to deploy the Docker image
-                    // Replace the command below with your actual deployment command
-                    sh 'portainer-stack-deploy.sh your-stack-name'
+                    docker.withRegistry('https://your-docker-registry', 'your-docker-credentials') {
+                        docker.image("your-react-app-image").push()
+                    }
                 }
             }
         }
