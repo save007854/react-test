@@ -7,7 +7,17 @@ pipeline {
                 checkout scm
             }
         }
-
+    stages {
+        stage('Build') {
+            steps {
+                // Make sure 'docker' is recognized in this context
+                script {
+                    docker.image('your-docker-image').inside {
+                    }
+                }
+            }
+        }
+    }
         stage('Build and Dockerize') {
             steps {
                 script {
