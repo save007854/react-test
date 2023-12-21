@@ -24,10 +24,10 @@ pipeline {
                 script {
                     docker.withRegistry('https://your-docker-registry', 'your-docker-credentials') {
                         docker.image("your-react-app-image").push()
+                        }
                     }
                 }
             }
-        }
-      }
-  }
+       }
+    }
 }
