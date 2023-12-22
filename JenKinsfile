@@ -1,42 +1,17 @@
 pipeline {
-
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
                 git 'https://github.com/save007854/react-test.git'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh 'npm install'
-                }
             }
         }
 
         stage('Build') {
             steps {
                 script {
-                    sh 'npm run build'
-                }
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                script {
-                    sh 'docker build -t your-image-name .'
-                }
-            }
-        }
-
-        stage('Docker Compose Build') {
-            steps {
-                script {
-                    sh 'docker-compose up -d'
+                    docker.build('your-react-app-image')
                 }
             }
         }
@@ -44,7 +19,11 @@ pipeline {
         stage('Deploy to Portainer') {
             steps {
                 script {
-                    sh 'portainer-stack-deploy.sh ptr_0+KqCrDu+V9IObBPQGuh39v3+3H8rx8nEOVGx47dT/Y='
+                    docker.withRegistry('docker.io', 'your-registry-credentials') {
+                        docker.image('your-react-app-image').push()
+                    }
+
+                    sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
