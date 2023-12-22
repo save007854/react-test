@@ -12,9 +12,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
-                  git 'https://github.com/save007854/react-test.git'
-                }
+                // Checkout code from GitHub
+                git 'https://github.com/save007854/react-test.git'
             }
         }
 
