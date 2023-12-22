@@ -13,7 +13,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    checkout scm
+                  git 'https://github.com/save007854/react-test.git'
                 }
             }
         }
@@ -21,7 +21,6 @@ pipeline {
         stage('Build React App') {
             steps {
                 script {
-                    sh 'nvm install 14'
                     sh 'npm install'
                     sh 'npm run build'
                 }
