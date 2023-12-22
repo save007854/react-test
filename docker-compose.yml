@@ -1,9 +1,6 @@
 version: '3'
 services:
-  web:
-    image: nginx:alpine
+  react-app:
+    image: your-react-app-image
     ports:
-      - "80:80"
-    volumes:
-      - ./build:/usr/share/nginx/html:ro
-    restart: always
+      - "3000:80"
