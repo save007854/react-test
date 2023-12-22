@@ -51,7 +51,7 @@ pipeline {
         stage('Deploy to Portainer') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'portainer-api-key', variable: 'PORTAINER_API_KEY')]) {
+                    withCredentials([string(credentialsId: 'ptr_L0bnwbU48gui4OjSsg2zzUKNq58lmg51UjHnQ5Su7eE=', variable: 'ptr_L0bnwbU48gui4OjSsg2zzUKNq58lmg51UjHnQ5Su7eE=')]) {
                         sh '''
                             curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $PORTAINER_API_KEY" \
                             --data-binary @portainer-stack-definition.json \
