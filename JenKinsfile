@@ -2,37 +2,38 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout code from GitHub
-                git 'https://github.com/save007854/react-test.git'
-            }
-        }
-
         stage('Build') {
             steps {
-                // Build React app
-                sh 'npm install'
-                sh 'npm run build'
-            }
-        }
-
-        stage('Dockerize') {
-            steps {
-                // Build Docker image
-                sh 'docker build -t your-image-name .'
-            }
-        }
-
-        stage('Deploy to Portainer') {
-            steps {
-                // Deploy Docker image to Portainer
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'ptr_L0bnwbU48gui4OjSsg2zzUKNq58lmg51UjHnQ5Su7eE=', passwordVariable: 'PORTAINER_PASSWORD', usernameVariable: 'PORTAINER_USERNAME')]) {
-                        sh "docker login -u $PORTAINER_USERNAME -p $PORTAINER_PASSWORD your-registry"
-                        sh "docker tag your-image-name your-registry/your-image-name" 
-                        sh "docker push your-registry/your-image-name"
-                    }
+                    // Build the Docker images
+                    sh 'docker-compose build'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run tests if needed
+                    sh 'docker-compose run web npm test'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Deploy the Docker containers
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+
+        stage('Deploy Portainer') {
+            steps {
+                script {
+                    // Deploy Portainer
+                    sh 'docker-compose up -d portainer'
                 }
             }
         }
