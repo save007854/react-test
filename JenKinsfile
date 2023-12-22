@@ -3,36 +3,53 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                checkout scm
+                // Assuming your Git repository URL is 'https://github.com/your-username/your-repo.git'
+                git 'https://github.com/save007854/react-test.git'
             }
         }
-        stage('Build') {
-            steps {
-                // Make sure 'docker' is recognized in this context
-                script {
-                    docker.image('your-docker-image').inside {
-                    }
-                }
-            }
-        }
-    }
-        stage('Build and Dockerize') {
+
+        stage('Install Dependencies') {
             steps {
                 script {
-                    docker.build("your-react-app-image")
+                    sh 'npm install'
                 }
             }
         }
 
-        stage('Push to Registry') {
+        stage('Build') {
             steps {
                 script {
-                    docker.withRegistry('https://your-docker-registry', 'your-docker-credentials') {
-                        docker.image("your-react-app-image").push()
-                    }
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    sh 'docker build -t your-image-name .'
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                script {
+                    sh 'docker push your-image-name'
+                }
+            }
+        }
+
+        stage('Deploy to Portainer') {
+            steps {
+                script {
+                    // Use Portainer CLI or API to deploy the Docker image
+                    // Replace the command below with your actual deployment command
+                    sh 'portainer-stack-deploy.sh ptr_0+KqCrDu+V9IObBPQGuh39v3+3H8rx8nEOVGx47dT/Y='
                 }
             }
         }
     }
+}
