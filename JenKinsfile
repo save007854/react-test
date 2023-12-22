@@ -5,7 +5,6 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                // Assuming your Git repository URL is 'https://github.com/your-username/your-repo.git'
                 git 'https://github.com/save007854/react-test.git'
             }
         }
@@ -34,10 +33,10 @@ pipeline {
             }
         }
 
-        stage('Docker Push') {
+        stage('Docker Compose Build') {
             steps {
                 script {
-                    sh 'docker push your-image-name'
+                    sh 'docker-compose up -d'
                 }
             }
         }
@@ -45,8 +44,6 @@ pipeline {
         stage('Deploy to Portainer') {
             steps {
                 script {
-                    // Use Portainer CLI or API to deploy the Docker image
-                    // Replace the command below with your actual deployment command
                     sh 'portainer-stack-deploy.sh ptr_0+KqCrDu+V9IObBPQGuh39v3+3H8rx8nEOVGx47dT/Y='
                 }
             }
