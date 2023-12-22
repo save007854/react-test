@@ -30,7 +30,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'ptr_L0bnwbU48gui4OjSsg2zzUKNq58lmg51UjHnQ5Su7eE=', passwordVariable: 'PORTAINER_PASSWORD', usernameVariable: 'PORTAINER_USERNAME')]) {
                         sh "docker login -u $PORTAINER_USERNAME -p $PORTAINER_PASSWORD your-registry"
-                        sh "docker tag your-image-name your-registry/your-image-name"
+                        sh "docker tag your-image-name your-registry/your-image-name" 
                         sh "docker push your-registry/your-image-name"
                     }
                 }
